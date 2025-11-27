@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automation ROI Calculator | Empower Digital Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Lato', sans-serif; background-color: #FDFBF7; color: #333D45; }
+        h1, h2, h3, h4, button { font-family: 'Poppins', sans-serif; }
+        
+        /* Brand Colors */
+        .text-accent { color: #F09B3E; }
+        .bg-accent { background-color: #F09B3E; }
+        .bg-accent-dark { background-color: #d88a34; }
+        .text-magenta { color: #C22B5D; }
+        .bg-magenta { background-color: #C22B5D; }
+        
+        /* Custom Gradients */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        /* Terminal Effect for "Processing" */
+        .terminal-box {
+            font-family: 'Fira Code', monospace;
+            background: #1e293b;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+        
+        /* Smooth Transitions */
+        .step-panel { display: none; animation: fadeIn 0.5s ease; }
+        .step-panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Custom Checkbox Card */
+        .workflow-checkbox:checked + div {
+            border-color: #F09B3E;
+            background-color: #FFF8F1;
+        }
+        .workflow-checkbox:checked + div .check-icon { opacity: 1; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-bold text-gray-800">Empower<span class="text-accent">Automation</span></span>
+            </div>
+            <a href="https://empowervaservices.co.uk" class="text-sm font-semibold text-gray-600 hover:text-accent transition">Back to Site</a>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4 md:p-8">
+        <div class="max-w-4xl w-full">
+            
+            <div class="text-center mb-10">
+                <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">Is Your "Busy Work" Costing You a Fortune?</h1>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Stop renting generic tools. Start owning your automation. Calculate exactly how much a <strong>Custom Script</strong> could save you compared to manual work or Zapier subscriptions.</p>
+            </div>
+
+            <div class="glass-panel rounded-2xl overflow-hidden relative min-h-[500px]">
+                
+                <div class="bg-gray-100 h-2 w-full">
+                    <div id="progress-bar" class="bg-accent h-full w-25% transition-all duration-500"></div>
+                </div>
+
+                <div id="step-1" class="step-panel active p-8 md:p-12">
+                    <div class="flex justify-between items-end mb-6">
+                        <div>
+                            <span class="text-accent font-bold uppercase tracking-wider text-sm">Step 1 of 3</span>
+                            <h2 class="text-2xl font-bold text-gray-800 mt-1">Where is the bottleneck?</h2>
+                            <p class="text-gray-500 text-sm">Select the workflows that drain your time.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label class="cursor-pointer group">
+                            <input type="checkbox" class="workflow-checkbox hidden" value="200">
+                            <div class="border-2 border-gray-200 rounded-xl p-5 hover:border-gray-300 transition relative">
+                                <div class="check-icon absolute top-4 right-4 opacity-0 text-accent transition"><i data-lucide="check-circle-2"></i></div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="bg-blue-100 p-2 rounded-lg text-blue-600"><i data-lucide="file-spreadsheet"></i></div>
+                                    <h3 class="font-bold text-gray-800">Data Entry & Sync</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Copy/pasting between Sheets, CRMs, or Forms.</p>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer group">
+                            <input type="checkbox" class="workflow-checkbox hidden" value="400">
+                            <div class="border-2 border-gray-200 rounded-xl p-5 hover:border-gray-300 transition relative">
+                                <div class="check-icon absolute top-4 right-4 opacity-0 text-accent transition"><i data-lucide="check-circle-2"></i></div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="bg-green-100 p-2 rounded-lg text-green-600"><i data-lucide="banknote"></i></div>
+                                    <h3 class="font-bold text-gray-800">Invoicing & Finance</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Creating invoices, reconciling Stripe/Xero manually.</p>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer group">
+                            <input type="checkbox" class="workflow-checkbox hidden" value="300">
+                            <div class="border-2 border-gray-200 rounded-xl p-5 hover:border-gray-300 transition relative">
+                                <div class="check-icon absolute top-4 right-4 opacity-0 text-accent transition"><i data-lucide="check-circle-2"></i></div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="bg-purple-100 p-2 rounded-lg text-purple-600"><i data-lucide="users"></i></div>
+                                    <h3 class="font-bold text-gray-800">Client Onboarding</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Sending contracts, welcome emails, and setup tasks.</p>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer group">
+                            <input type="checkbox" class="workflow-checkbox hidden" value="500">
+                            <div class="border-2 border-gray-200 rounded-xl p-5 hover:border-gray-300 transition relative">
+                                <div class="check-icon absolute top-4 right-4 opacity-0 text-accent transition"><i data-lucide="check-circle-2"></i></div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="bg-orange-100 p-2 rounded-lg text-orange-600"><i data-lucide="shopping-bag"></i></div>
+                                    <h3 class="font-bold text-gray-800">E-Commerce Ops</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Inventory updates, order tracking, supplier emails.</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="nextStep(2)" class="bg-accent hover:bg-accent-dark text-white px-8 py-3 rounded-lg font-bold shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                            Next Step <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="step-2" class="step-panel p-8 md:p-12">
+                    <div class="flex justify-between items-end mb-6">
+                        <div>
+                            <span class="text-accent font-bold uppercase tracking-wider text-sm">Step 2 of 3</span>
+                            <h2 class="text-2xl font-bold text-gray-800 mt-1">The Cost of Doing Nothing</h2>
+                            <p class="text-gray-500 text-sm">Be honest—estimates help us calculate ROI.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div>
+                            <label class="flex justify-between font-bold text-gray-700 mb-2">
+                                <span>Manual Hours Spent Per Week</span>
+                                <span class="text-accent" id="display-hours">5 hours</span>
+                            </label>
+                            <input type="range" id="input-hours" min="1" max="40" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500">
+                            <div class="flex justify-between text-xs text-gray-400 mt-1"><span>1 hr</span><span>40 hrs</span></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-2">Staff Hourly Rate (£)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-3 text-gray-400">£</span>
+                                    <input type="number" id="input-rate" value="25" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-2">Monthly Sub Costs (£)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-3 text-gray-400">£</span>
+                                    <input type="number" id="input-subs" value="45" class="w-full p-3 pl-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none">
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">e.g. Zapier, Make, Calendly fees</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 flex justify-between">
+                        <button onclick="prevStep(1)" class="text-gray-500 hover:text-gray-800 font-semibold">Back</button>
+                        <button onclick="calculateROI()" class="bg-magenta hover:bg-pink-700 text-white px-8 py-3 rounded-lg font-bold shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                            Calculate Savings <i data-lucide="calculator" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="step-3" class="step-panel p-8 md:p-12 h-full flex flex-col justify-center items-center">
+                    <div class="w-full max-w-lg">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Analyzing Feasibility...</h2>
+                        
+                        <div class="terminal-box rounded-lg p-4 shadow-inner h-48 overflow-hidden flex flex-col-reverse">
+                            <div id="terminal-lines" class="space-y-1"></div>
+                        </div>
+                        
+                        <p class="text-center text-sm text-gray-500 mt-4">Checking API compatibility & cost efficiency...</p>
+                    </div>
+                </div>
+
+                <div id="step-4" class="step-panel p-8 md:p-12">
+                    <div class="text-center mb-6">
+                        <h2 class="text-3xl font-extrabold text-gray-900">Your "Asset vs. Rental" Report</h2>
+                        <p class="text-gray-600 mt-2">Investing in custom code pays for itself in <span class="text-magenta font-bold" id="roi-time">3 months</span>.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                        <div class="lg:col-span-2 h-64">
+                            <canvas id="roiChart"></canvas>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6 shadow-lg">
+                            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide">2-Year Projection</h3>
+                            
+                            <div class="mt-4 border-b pb-4 mb-4">
+                                <p class="text-gray-600 text-sm">If you do nothing (Manual):</p>
+                                <p class="text-2xl font-bold text-red-500" id="result-manual">£0</p>
+                            </div>
+                            
+                            <div class="mt-4 border-b pb-4 mb-4">
+                                <p class="text-gray-600 text-sm">If you Rent (Zapier/Subs):</p>
+                                <p class="text-2xl font-bold text-accent" id="result-sub">£0</p>
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="text-gray-600 text-sm">If you Own (Empower):</p>
+                                <p class="text-3xl font-extrabold text-magenta" id="result-custom">£0</p>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold mt-2 inline-block">One-time Investment</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <a href="https://empowervaservices.co.uk/contact-us/" class="inline-block bg-accent hover:bg-accent-dark text-white text-lg px-10 py-4 rounded-lg font-bold shadow-xl transition transform hover:scale-105">
+                            Book Your Code Build
+                        </a>
+                        <p class="text-xs text-gray-400 mt-4">*Estimates based on selected complexity. Final quote provided after discovery call.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- STATE ---
+        let currentStep = 1;
+        let baseCustomCost = 400; // Base setup fee
+        
+        // --- UI REFERENCES ---
+        const progressBar = document.getElementById('progress-bar');
+        const hoursInput = document.getElementById('input-hours');
+        const hoursDisplay = document.getElementById('display-hours');
+
+        // --- EVENT LISTENERS ---
+        hoursInput.addEventListener('input', (e) => {
+            hoursDisplay.innerText = `${e.target.value} hours`;
+        });
+
+        // --- NAVIGATION FUNCTIONS ---
+        function nextStep(step) {
+            document.querySelectorAll('.step-panel').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+            
+            // Update Progress
+            let width = '25%';
+            if(step === 2) width = '50%';
+            if(step === 3) width = '75%';
+            if(step === 4) width = '100%';
+            progressBar.style.width = width;
+            currentStep = step;
+        }
+
+        function prevStep(step) {
+            nextStep(step);
+        }
+
+        // --- CALCULATION & ANIMATION ---
+        function calculateROI() {
+            // 1. Move to processing screen
+            nextStep(3);
+
+            // 2. Run "Terminal" Simulation
+            const terminal = document.getElementById('terminal-lines');
+            const lines = [
+                "> Initializing workflow analysis...",
+                "> Connecting to pricing APIs...",
+                "> Analyzing Zapier subscription tiers...",
+                "> Identifying redundancy in manual processes...",
+                "> Calculating Code-Based efficiency...",
+                "> SUCCESS: Feasibility confirmed."
+            ];
+
+            let delay = 0;
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    const p = document.createElement('p');
+                    p.classList.add('terminal-line');
+                    if(index === lines.length -1) p.classList.add('text-green-400');
+                    p.innerText = line;
+                    terminal.prepend(p);
+                }, delay);
+                delay += 600; // Delay between lines
+            });
+
+            // 3. Perform Math & Render Results (After simulation)
+            setTimeout(() => {
+                performMath();
+                nextStep(4);
+            }, 4000);
+        }
+
+        function performMath() {
+            // Get Values
+            const hours = parseInt(document.getElementById('input-hours').value);
+            const rate = parseInt(document.getElementById('input-rate').value);
+            const subs = parseInt(document.getElementById('input-subs').value);
+
+            // Calculate Workflow Complexity (Add to base cost)
+            let complexityCost = 0;
+            document.querySelectorAll('.workflow-checkbox:checked').forEach(box => {
+                complexityCost += parseInt(box.value);
+            });
+            
+            const customTotal = baseCustomCost + complexityCost; // One time
+
+            // 2 Year Projections
+            const manualAnnual = (hours * 52 * rate);
+            const manualTwoYear = manualAnnual * 2;
+
+            const subAnnual = (subs * 12);
+            const subTwoYear = subAnnual * 2; // Assuming standard Zapier hell
+
+            const customTwoYear = customTotal + 300; // Initial build + maybe 1 hr support later
+
+            // Update Text
+            document.getElementById('result-manual').innerText = formatCurrency(manualTwoYear);
+            document.getElementById('result-sub').innerText = formatCurrency(subTwoYear + manualTwoYear); // You still do some manual work with subs usually, but lets keep it simple: Sub cost + remaining manual
+            
+            // Correction: Let's compare PURE costs
+            // Manual: Just the labour cost
+            // Sub: The labour cost (usually reduced by 50%) + Subscription
+            // Custom: The cost of the build
+            
+            // Simplified for Impact:
+            document.getElementById('result-manual').innerText = formatCurrency(manualTwoYear); // 100% Pain
+            document.getElementById('result-sub').innerText = formatCurrency(subTwoYear); // Just the rental fee over 2 years
+            document.getElementById('result-custom').innerText = formatCurrency(customTotal); // The one-off
+
+            // ROI Time Calculation
+            const monthlySavings = (hours * 4 * rate) + subs; 
+            const monthsToPayOff = Math.ceil(customTotal / monthlySavings);
+            document.getElementById('roi-time').innerText = `${monthsToPayOff} months`;
+
+            // Render Chart
+            renderChart(manualTwoYear, subTwoYear, customTotal);
+        }
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumSignificantDigits: 3 }).format(num);
+        }
+
+        // --- CHART.JS CONFIG ---
+        function renderChart(manual, sub, custom) {
+            const ctx = document.getElementById('roiChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Manual Work (2 Yrs)', 'Subscription Tools (2 Yrs)', 'Empower Code (One-off)'],
+                    datasets: [{
+                        label: 'Total Cost (£)',
+                        data: [manual, sub, custom],
+                        backgroundColor: [
+                            'rgba(229, 231, 235, 0.8)', // Grey
+                            'rgba(240, 155, 62, 0.8)',  // Orange
+                            'rgba(194, 43, 93, 1)'      // Magenta (Hero)
+                        ],
+                        borderColor: [
+                            'rgba(229, 231, 235, 1)',
+                            'rgba(240, 155, 62, 1)',
+                            'rgba(194, 43, 93, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return formatCurrency(context.raw);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
